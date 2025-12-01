@@ -27,6 +27,7 @@ Will I do it again? Absolutely.
 
 THIS CLASS IS USELESS.
 ABANDON ALL HOPE YE WHO ENTER HERE.
+And all that just for me to refactor it for a shorter and better version 😭
 
 
 Author: Myson Dio
@@ -56,14 +57,6 @@ class _RetAddress(tuple[str, int]):
     
     `adress[1]`: the port
     """
-    @overload
-    def __init__(self, address: tuple[str, int]) -> None: ...
-    @overload
-    def __init__(self, host: str, port: int) -> None: ...
-        
-    def __init__(self, *args, **kwargs) -> None:
-        self.host: str
-        self.port: int
     @overload   
     def __new__(cls, address: tuple[str, int]) -> '_RetAddress': ...
     @overload   
@@ -71,46 +64,48 @@ class _RetAddress(tuple[str, int]):
         
     def __new__(cls, *args, **kwargs) -> '_RetAddress | None' :
         #?int, str check maybe
-        if args:
-            if len(args) == 1 and isinstance(args[0], tuple):
-                cls.host = args[0][0]
-                cls.port = args[0][1]
-                return super().__new__(cls)
-            elif len(args) == 2:
-                cls.host = args[0]
-                cls.port = args[1]
-                return super().__new__(cls)
-        elif kwargs:
-            if len(kwargs) == 1 and isinstance(list(kwargs.items())[0][1], tuple):
-                if 'address' in kwargs:
-                    cls.host, cls.port = kwargs.pop('address')
-                else:
-                    raise ValueError(f'"{list(kwargs.keys())[0]}" is not a supported argument.')
-                return super().__new__(cls)
-            elif len(kwargs) == 2:
-                if 'host' in kwargs:
-                    cls.host = kwargs.pop('host')
-                if 'port' in kwargs:
-                    cls.port = kwargs.pop('port')
-                unexpected_kwargs = set(kwargs) - {'host', 'port'}
-                if unexpected_kwargs:
-                    raise ValueError(f"Unexpected argument(s) passed: {', '.join(unexpected_kwargs)}")
-                return super().__new__(cls)
+        if len(args) == 1 and isinstance(args[0], tuple):
+            host, port = args[0]
+        elif len(args) == 2:
+            host = args[0]
+            port = args[1]
+        elif 'address' in kwargs:
+            host, port = kwargs.pop('address')
+        elif 'host' in kwargs and 'port' in kwargs:
+            host, port = kwargs.pop('host'), kwargs.pop('port')
         else:
-            raise TypeError("Invalid arguments")
+            raise TypeError("Invalid arguments") 
+        return super().__new__(cls, (host, port))
+        
+    @property
+    def host(self) -> str:
+        return self[0]
+    
+    @property
+    def port(self) -> int:
+        return self[1]
         
     def __repr__(self):
         return f"_RetAddress<host: {self.host}, port: {self.port}>"
         
         
 if __name__ == '__main__':
-    addy0 = _RetAddress('192.168.0.1', 8080)
-    addy1 = _RetAddress(host='192.168.0.1', port=8080)
-    addy2 = _RetAddress(address=('192.168.0.1', 8080))
-    addy3 = _RetAddress(('192.168.0.1', 8080))
+    import random
+
+    def random_ip():
+        return ".".join(str(random.randint(0, 255)) for _ in range(4))
+
+    def random_port():
+        return random.randint(1024, 65535)  # Avoid well-known ports
+
+    addy0 = _RetAddress(random_ip(), random_port())
+    addy1 = _RetAddress(host=random_ip(), port=random_port())
+    addy2 = _RetAddress(address=(random_ip(), random_port()))
+    addy3 = _RetAddress((random_ip(), random_port()))
+
     print(addy0)
     print(addy1)
     print(addy2)
     print(addy3)
-    print(f"ip address: {addy0.host}")
-    print(f"port: {addy3.port}")
+    print(f"addy0's ip address: {addy0.host}")
+    print(f"addy3's port: {addy3.port}")
