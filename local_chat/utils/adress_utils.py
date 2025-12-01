@@ -62,7 +62,7 @@ class _RetAddress(tuple[str, int]):
     @overload   
     def __new__(cls, host: str, port: int) -> '_RetAddress': ...
         
-    def __new__(cls, *args, **kwargs) -> '_RetAddress | None' :
+    def __new__(cls, *args, **kwargs) -> '_RetAddress' :
         #?int, str check maybe
         if len(args) == 1 and isinstance(args[0], tuple):
             host, port = args[0]
