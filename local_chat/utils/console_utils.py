@@ -4,6 +4,7 @@ from rich.panel import Panel
 from rich import box
 import subprocess
 import sys
+from local_chat.utils.adress_utils import _RetAddress #type: ignore
 
 def clear_sreen():
     if sys.platform == "win32":
@@ -19,12 +20,12 @@ def print_server_closed(stream: Console):
     msg = "[bold yellow]Server closed.[/bold yellow]"
     stream.print(Panel(Align.center(msg), box=box.ROUNDED, border_style="green", title="SERVER"))
     
-def print_client_connected(stream: Console, address):
+def print_client_connected(stream: Console, address: _RetAddress):
     ip, port = address
     msg = f"[green]{ip}[/green]:[cyan]{port}[/cyan] connected"
     stream.print(Panel(msg, box=box.ROUNDED, border_style="green", title="CLIENT CONNECTED"))
     
-def print_client_disconnected(stream: Console, address):
+def print_client_disconnected(stream: Console, address: _RetAddress):
     ip, port = address
     msg = f"[red]{ip}[/red]:[yellow]{port}[/yellow] disconnected"
     stream.print(Panel(msg, box=box.ROUNDED, border_style="red", title="CLIENT LEFT"))
@@ -33,7 +34,7 @@ def print_port_in_use(stream: Console, host, port):
     msg = f"[bold red][ERROR] -[/] [bold cyan]Adress: [cyan]{host}[/cyan]:[magenta]{port}[/magenta] already in use.[/bold cyan]"
     stream.print(Panel(Align.center(msg), title="SERVER", border_style='bold red'))
     
-def print_incoming_message(stream: Console, address, text):
+def print_incoming_message(stream: Console, address: _RetAddress, text):
     ip, port = address
     msg = (
         f"[bold cyan]From {ip}:{port}[/bold cyan]\n"
@@ -54,7 +55,7 @@ if __name__ == "__main__":
     console = Console()
     host = '192.168.0.1'
     port = 8080
-    address = ('0.0.0.0', port)
+    address:_RetAddress = _RetAddress('0.0.0.0', port)
     clear_sreen()
     print_client_connected(console, address)
     print_client_disconnected(console, address)
