@@ -113,12 +113,7 @@ Open a **new terminal** (keep the server running) and start the client:
 
 ```bash
 # From the project root directory
-python -m local_chat.app.app
-```
-
-**Or alternatively:**
-```bash
-python local_chat/app/app.py
+python main.py
 ```
 
 A window with a phone-like interface will appear!
