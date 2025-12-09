@@ -35,12 +35,12 @@ License: MIT
 Homepage: https://github.com/gtRZync/local-chat
 """
 
-class _RetAddress(tuple[str, int]):
+class Address(tuple[str, int]):
     """
     Brief
     -------------------------
     
-    The `_RetAddress` class is just a wrapper type given to an IPv4 adress (too lazy for IPv6)
+    The `Address` class is just a wrapper type given to an IPv4 adress (too lazy for IPv6)
     
     Args
     -------------------------
@@ -58,11 +58,11 @@ class _RetAddress(tuple[str, int]):
     `adress[1]`: the port
     """
     @overload   
-    def __new__(cls, address: tuple[str, int]) -> '_RetAddress': ...
+    def __new__(cls, address: tuple[str, int]) -> 'Address': ...
     @overload   
-    def __new__(cls, host: str, port: int) -> '_RetAddress': ...
+    def __new__(cls, host: str, port: int) -> 'Address': ...
         
-    def __new__(cls, *args, **kwargs) -> '_RetAddress' :
+    def __new__(cls, *args, **kwargs) -> 'Address' :
         #?int, str check maybe
         if len(args) == 1 and isinstance(args[0], tuple):
             host, port = args[0]
@@ -86,7 +86,7 @@ class _RetAddress(tuple[str, int]):
         return self[1]
         
     def __repr__(self):
-        return f"_RetAddress<host: {self.host}, port: {self.port}>"
+        return f"Address<host: {self.host}, port: {self.port}>"
         
         
 if __name__ == '__main__':
@@ -98,10 +98,10 @@ if __name__ == '__main__':
     def random_port():
         return random.randint(1024, 65535)  # Avoid well-known ports
 
-    addy0 = _RetAddress(random_ip(), random_port())
-    addy1 = _RetAddress(host=random_ip(), port=random_port())
-    addy2 = _RetAddress(address=(random_ip(), random_port()))
-    addy3 = _RetAddress((random_ip(), random_port()))
+    addy0 = Address(random_ip(), random_port())
+    addy1 = Address(host=random_ip(), port=random_port())
+    addy2 = Address(address=(random_ip(), random_port()))
+    addy3 = Address((random_ip(), random_port()))
 
     print(addy0)
     print(addy1)
