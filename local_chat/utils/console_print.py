@@ -7,6 +7,8 @@ import sys
 from local_chat.utils.adress import Address #type: ignore
 import traceback
 
+console = Console()
+
 def clear_sreen():
     if sys.platform == "win32":
         subprocess.run(['cls'], shell=True)
@@ -138,7 +140,6 @@ def disconnected_from_server(address: Address):
     )
     
 if __name__ == "__main__":
-    console = Console()
     host = '192.168.0.1'
     port = 8080
     address:Address = Address('0.0.0.0', port)
