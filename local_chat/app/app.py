@@ -185,6 +185,9 @@ class Phone(ctk.CTk, TimeUpdatableMixin):
                     self.show_view(self.previous_view)
         else:
             self.show_view(view)
+    
+    def power_on(self):
+        self.mainloop()
 
         
 if __name__ == "__main__":
