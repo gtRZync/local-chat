@@ -1,13 +1,14 @@
+from typing import Callable, Optional
 import customtkinter as ctk
 from PIL import Image
 
 class NamePlate(ctk.CTkFrame):
-    def __init__(self, master, photo_path, name, status, on_click=None, hover= True, **kwargs):
+    def __init__(self, master, photo_path, name, status, on_click : Optional[Callable]=None, hover= True, **kwargs):
         cursor = 'hand2' if hover else 'arrow'
         super().__init__(master, fg_color='#FDFDFD', border_width=0, cursor=cursor, **kwargs)
         self.text_font = ctk.CTkFont(family='SF Pro Text', weight='normal', size=16)
         self.text_font_bold = ctk.CTkFont(family='SF Pro Text', weight='bold', size=18)
-        self.on_click = on_click
+        self.on_click = on_click #TODO: make the photo clickable
         self.hover = hover
         self.avatar = ctk.CTkImage(Image.open(photo_path), size=(70, 70)) 
         self.pfp_label = ctk.CTkLabel(self, text='', image=self.avatar)

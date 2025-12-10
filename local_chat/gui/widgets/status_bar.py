@@ -2,7 +2,6 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 from local_chat.utils import TimeUpdatableMixin
 from local_chat.config import ASSETS_DIR
-from local_chat.utils import Vector2i
 
 class StatusBar(TimeUpdatableMixin):
     def __init__(self, canvas: ctk.CTkCanvas, canvas_width: int) -> None:
