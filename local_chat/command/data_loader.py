@@ -1,6 +1,6 @@
 import json
-from typing import Optional, Union
-from local_chat.config.path import DATABASE_DIR
+from typing import Optional
+from local_chat.config.path import DATABASE_DIR, DEFAULT_DATABASE_STRUCTURE
 from rich import print
 from rich.panel import Panel
 
@@ -17,10 +17,13 @@ def get_users_and_conversations(data, /) -> tuple[_Users, _Conversations]:
 
 def load_database():
     try:
-        with open(DATABASE_DIR) as json_file:
-            json_obj = json_file.read()
-            data = json.loads(json_obj)
-            return data
+        if not DATABASE_DIR.exists() or DATABASE_DIR.stat().st_size == 0:
+            with open(DATABASE_DIR, 'w') as json_file:
+                json.dump(DEFAULT_DATABASE_STRUCTURE, json_file, indent=4)
+                return DEFAULT_DATABASE_STRUCTURE
+                
+        with open(DATABASE_DIR) as database:
+            return json.load(database)
     except FileNotFoundError:
         print(Panel(f"The file '{DATABASE_DIR}' was not found.", title="[red]File Not Found[/red]", style="red"))
     except json.JSONDecodeError:
