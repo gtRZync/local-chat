@@ -1,6 +1,10 @@
 from rich.console import Console
-from local_chat.utils import *
+from local_chat.utils import (
+    clear_sreen, print_server_start, print_port_in_use, print_os_error, print_keyboard_interrupt,
+    print_client_connected, print_server_closed, print_client_disconnected
+)
 from local_chat.command.auth import get_user_id
+from local_chat.utils.adress import Address
 from typing import Optional
 import threading
 import socket
@@ -12,7 +16,7 @@ import sys
 # MSG:receiver_user_id:message_content -> MSG_OK or MSG_FAIL
 
 class Server(socket.socket):
-    def __init__(self, host: str = '0.0.0.0', port: int = 5423) -> None:
+    def __init__(self, address: Address = Address(host= '0.0.0.0', port=5423)) -> None:
         clear_sreen()
         super().__init__(socket.AF_INET, socket.SOCK_STREAM)
         # Store clients by user_id (int)
@@ -20,8 +24,8 @@ class Server(socket.socket):
         # Store user info for each client
         self.client_user_info: dict[int, dict] = {}  # user_id -> {name, number}
         self.stream: Console = Console()
-        self.HOST: str = host
-        self.PORT: int = port
+        self.HOST: str = address.host
+        self.PORT: int = address.port
         # messages: conversation_id -> message_id -> message_content
         # conversation_id is a string key from sorted user_ids: "user1_id:user2_id"
         # This structure allows storing messages per conversation for data saving
@@ -29,7 +33,7 @@ class Server(socket.socket):
         self.message_counters: dict[str, int] = {}  #?Track message IDs per conversation
         try:
             self.bind((self.HOST, self.PORT))
-            print_server_start(self.stream, host, port)
+            print_server_start(self.stream, self.HOST, self.PORT)
         except OSError as e:
             if e.errno == errno.EADDRINUSE:
                 print_port_in_use(self.stream, self.HOST, self.PORT)
