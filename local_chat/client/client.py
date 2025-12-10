@@ -12,6 +12,7 @@ class Client(socket.socket):
         self.phone_number = phone_number
         self.username = username
         self.user_id: Optional[int] = None
+        self.serv_adress = address
         self.message_callback: Optional[Callable[[int, str, str], Any]] = None  # (sender_id, sender_name, message)
         self.establish_connection(address)
         
@@ -33,43 +34,27 @@ class Client(socket.socket):
         self.message_callback = callback
         
     def send_message(self, receiver_user_id: int, message: str) -> bool:
-        """
-        Send a message to another user.
-        Returns True if message was sent successfully, False otherwise.
-        """
         if self.user_id is None:
             print("Error: Not authenticated. Cannot send message.")
             return False
-        
+    
+        old_timeout = self.gettimeout()
         try:
-            # Set timeout for send operation
-            old_timeout = self.gettimeout()
-            self.settimeout(5)  # 5 second timeout for send/response
+            # Temporary timeout
+            self.settimeout(5)
             
-            # Protocol: MSG:receiver_user_id:message_content
             message_data = f"MSG:{receiver_user_id}:{message}"
             self.sendall(message_data.encode('utf-8'))
-            
-            # Wait for response
-            response = self.recv(255).decode('utf-8')
-            
-            # Restore previous timeout
-            self.settimeout(old_timeout)
-            
-            if response == "MSG_OK":
-                return True
-            else:
-                print(f"Message send failed: {response}")
-                return False
-                
+            return True
         except Exception as e:
             print(f"Error sending message: {e}")
-            # Restore timeout in case of error
-            try:
-                self.settimeout(None)
-            except:
-                pass
             return False
+        finally:
+            try:
+                self.settimeout(old_timeout)
+            except Exception:
+                pass
+
     
     def listen_for_messages(self):
         """Listen for incoming messages from the server."""
@@ -89,15 +74,15 @@ class Client(socket.socket):
                         sender_name = parts[1]
                         message_content = parts[2]
                         
-                        # Call callback if set
-                        # Note: Callback should handle thread safety if updating UI
+                        # Note: Callback should handle thread safety if updating UI, that's why i'm using ctk's after method thank God lol
                         if self.message_callback:
                             self.message_callback(sender_id, sender_name, message_content)
                         else:
                             print(f"[{sender_name}]: {message_content}")
                 else:
                     print(f"Received: {message_data}")
-                    
+            except socket.timeout:
+                pass
             except ConnectionResetError as e:
                 print(f"Connection reset: {e}")
                 break
@@ -108,7 +93,8 @@ class Client(socket.socket):
         # Close socket when loop exits
         try:
             self.close()
-        except:
+            disconnected_from_server(self.serv_adress)
+        except Exception:
             pass
                 
     def _authenticate(self) -> bool:
@@ -156,6 +142,10 @@ class Client(socket.socket):
 
         except ConnectionRefusedError:
             connection_refused(address)
+            sys.exit(1)
+            
+        except ConnectionAbortedError:
+            connection_aborted(address)
             sys.exit(1)
 
         except TimeoutError:
