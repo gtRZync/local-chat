@@ -2,8 +2,7 @@ from .console_print import (print_client_connected, print_client_disconnected, p
                             ,print_keyboard_interrupt, print_port_in_use, print_server_start, clear_sreen
                             ,print_os_error, print_server_closed
                             )
-from .adress import Address # type: ignore
-from local_chat.config.path import ASSETS_DIR, SOUND_DIR, DATA_DIR, FONT_DIR
+from .adress import Address
 from .vector2i import Vector2i
 from .time_updatable import TimeUpdatableMixin
 
@@ -19,10 +18,6 @@ __all__ = [
     'print_os_error',
     'print_server_closed',
     'Address',
-    'ASSETS_DIR',
-    'SOUND_DIR',
-    'DATA_DIR',
-    'FONT_DIR',
     'Vector2i',
     'TimeUpdatableMixin'
 ]
