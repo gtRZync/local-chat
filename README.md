@@ -1,8 +1,7 @@
-# 📱 **Local Chat - A Modern Socket-Based Chat Application**
+# <h1 align="center"> 📱 **Local Chat - A Modern Socket-Based Chat Application** </h1>
 
 <div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/language-Python-blue) 
 ![Platforms](https://img.shields.io/badge/platform-Linux%2C%20Windows%2C%20macOS-orange)
 ![CustomTkinter](https://img.shields.io/badge/library-CustomTkinter-green)
