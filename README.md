@@ -28,11 +28,15 @@ The application features a **phone-inspired UI design** using CustomTkinter, pro
 ## **Features**
 
 - 🔐 **User Authentication** - Login/signup system with phone number and username
-- 💬 **Real-time Messaging** - Socket-based communication between clients
+- 💬 **Real-time Messaging** - Socket-based communication between clients with instant delivery
 - 📱 **Modern UI** - Phone-inspired design with CustomTkinter
 - 🎨 **Beautiful Interface** - Clean, modern aesthetic with custom fonts and icons
 - 🔄 **Multi-threaded** - Non-blocking UI with background network operations
-- 💾 **Local Database** - JSON-based user and conversation storage
+- 💾 **Message Persistence** - All messages saved to JSON database with timestamps
+- 📜 **Conversation History** - Load and display past messages when opening chats
+- 👥 **Auto-Contact Discovery** - Connected users automatically appear in each other's contact lists
+- 🖱️ **Draggable App Icon** - Drag the app icon on the home screen for a playful experience
+- 🎯 **GUI Event System** - Thread-safe UI updates via server-sent GUI events
 - 🌐 **Local Network Support** - Works on same PC or local network
 
 ---
@@ -135,9 +139,22 @@ A window with a phone-like interface will appear!
 #### **Chatting**
 
 1. After login, you'll see the **Chat List** view
-2. Select a contact to start chatting
-3. Type your message and click the send button
-4. Messages appear in real-time!
+   - Connected users automatically appear in your contact list
+   - Contacts are loaded from your conversation history
+2. **Select a contact** to open the conversation
+   - Past messages are automatically loaded and displayed
+   - Messages are sorted chronologically
+3. **Type your message** and click the send button
+   - Messages appear in real-time!
+   - Sent messages appear on the right (blue), received on the left (gray)
+   - All messages are automatically saved to the database
+4. **Navigate back** using the back arrow to return to the chat list
+
+#### **Home Screen Features**
+
+- **Drag the Chat icon** - Click and drag the app icon around the home screen
+- **Click the icon** - Tap (without dragging) to launch the chat app
+- **Live clock** - Real-time clock display on the home screen
 
 ---
 
@@ -189,8 +206,7 @@ local-chat/
 │   ├── icon/             # Application icons
 │   └── model/            # UI mockups/screenshots
 ├── data/                  # Data storage
-│   ├── database.json     # User and conversation data
-│   └── conversation.json # Conversation history
+│   └── database.json     # User accounts, conversations, and message history
 ├── local_chat/
 │   ├── app/              # Main application (client GUI)
 │   │   └── app.py       # Entry point for client
@@ -245,6 +261,9 @@ This project was created for a **Human-Computer Interaction** course assignment.
 - [x] Modern GUI design principles
 - [x] User authentication systems
 - [x] Real-time communication
+- [x] Data persistence (JSON database)
+- [x] Thread-safe GUI updates
+- [x] Event-driven architecture
 
 ---
 
@@ -257,18 +276,21 @@ This code is **NOT production-ready** and is intended for educational purposes:
 - ❌ No encryption or security measures
 - ❌ No error recovery mechanisms
 - ❌ Limited scalability (designed for 2 users)
-- ❌ No message persistence (messages lost on server restart)
 - ❌ Basic error handling
 - ❌ No input validation in many areas
+- ❌ No message encryption
+- ❌ No user blocking/reporting features
 
 ### **Known Limitations**
 
 - Server must be running before clients connect
 - Only supports 2 users chatting at a time
-- No message history persistence
 - No file sharing capabilities
 - No emoji/sticker support (yet (if im not lazy))
 - Basic authentication (no password)
+- Messages are saved but not encrypted
+- No message search functionality
+- No group chats (1-on-1 only)
 
 ---
 
@@ -292,6 +314,18 @@ This code is **NOT production-ready** and is intended for educational purposes:
 - Verify both users are logged in
 - Check server console for connection status
 - Ensure correct `receiver_user_id` is used
+- Check if messages are being saved to `data/database.json`
+
+### **Contacts not showing up**
+- Ensure both users are connected to the server
+- Contacts appear automatically when users connect
+- Check `data/database.json` for conversation entries
+- Try refreshing the chat list view
+
+### **Message history not loading**
+- Verify conversation exists in `data/database.json`
+- Check that messages array contains message objects
+- Ensure timestamps are in correct format: `YYYY-MM-DDTHH:MM:SS`
 
 ---
 
@@ -308,15 +342,9 @@ The codebase is structured for easy extension:
 
 ## 👥 **Contributors**
 
-- **Developer:** [Your Name]
+- **Developer:** Myson Dio
 - **Course:** Human-Computer Interaction
 - **Institution:** University of French Guiana
-
----
-
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -334,3 +362,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 *"Connecting people, one socket at a time"*
 
 </div>
+
+<p align="center"><a href="https://github.com/catppuccin/catppuccin/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=363a4f&colorB=b7bdf8"/></a></p>
