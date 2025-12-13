@@ -205,8 +205,7 @@ local-chat/
 ├── assets/                 # UI assets (images, fonts, icons)
 │   ├── background/        # Background images
 │   ├── font/             # Custom fonts (SF Pro)
-│   ├── icon/             # Application icons
-│   └── model/            # UI mockups/screenshots
+│   └─ icon/             # Application icons
 ├── data/                  # Data storage
 │   └── database.json     # User accounts, conversations, and message history
 ├── local_chat/
@@ -241,7 +240,7 @@ To change these, modify the `Server` class initialization:
 server = Server(host='localhost', port=5423)
 ```
 
-> **[!NOTE]**
+>[!NOTE]
 >Press `CTRL + C` to terminate the server
 
 ### **Client Configuration**
