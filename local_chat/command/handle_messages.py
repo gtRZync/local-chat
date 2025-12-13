@@ -185,7 +185,6 @@ def create_conversations_for_connected_user(
             op_failed (bool): True if the operation could not be completed due to an error.
     """
     try:
-        print(f"existing_user_ids: {existing_user_ids}")
         status = CreationStatus(created=False, existing=True, op_failed=False)
         for existing_user_id in existing_user_ids:
             status = ensure_conversation_exists(new_user_id, existing_user_id)
