@@ -82,21 +82,23 @@ The application features a **phone-inspired UI design** using CustomTkinter, pro
 
 ##  **Usage**
 
-### **Step 1: Start the Server**
+## **Step 1: Start the Server**
 
-The server must be running before clients can connect. Open a terminal and run:
+The server must be running before clients can connect.
+Open a terminal in the project root and run:
 
 ```bash
-# From the project root directory
-python -m local_chat.server.server
+python -m local_chat.server
 ```
 
 **Or alternatively:**
+
 ```bash
 python local_chat/server/server.py
 ```
 
 You should see:
+
 ```
 ╭─────────────────────────────────╮
 │ SERVER                          │
@@ -105,6 +107,7 @@ You should see:
 │ 0.0.0.0:5423                    │
 ╰─────────────────────────────────╯
 ```
+---
 
 >[!NOTE] 
 >The server runs on `localhost:5423` by default. Keep this terminal open while using the application.
@@ -129,9 +132,9 @@ A window with a phone-like interface will appear!
 
 1. **Click the Chat icon** on the home screen
 2. **Enter your details:**
-   - Phone number (10 digits) (I chose my country's format: **0694 XXX XXX**)
+   - Phone number (10 digits) (I chose my country's format: **0694 XXX XXX**) honestly, **123...90** will work since i didn't go hard on number format checking just yet
    - Username (minimum 3 characters)
-3. **Click Continue**
+3. **Click Continue or the Enter key**
    - If you're a new user, an account will be created automatically
    - If you're an existing user, you'll be logged in
 
@@ -230,13 +233,16 @@ local-chat/
 ### **Server Configuration**
 
 Default server settings (in `local_chat/server/server.py`):
-- **Host:** `0.0.0.0` (accepts connections from any interface)
+- **Host:** `0.0.0.0` - accepts connections from any interface
 - **Port:** `5423`
 
 To change these, modify the `Server` class initialization:
 ```python
 server = Server(host='localhost', port=5423)
 ```
+
+> **[!NOTE]**
+>Press `CTRL + C` to terminate the server
 
 ### **Client Configuration**
 
