@@ -5,14 +5,16 @@ from local_chat.utils.console_print import (connection_refused, connection_abort
                                             connection_reset, broken_pipe, exception_occured, connected_to_server)
 import threading
 from typing import Optional, Callable, Any
+import queue
 
 class Client(socket.socket):
     def __init__(self, phone_number: str, username: str, address: Address = Address(host='localhost', port=5423)):
         super().__init__(socket.AF_INET, socket.SOCK_STREAM)
         self.phone_number = phone_number
         self.username = username
-        self.user_id: Optional[int] = None
+        self.user_id: int | None = None
         self.serv_adress = address
+        self.gui_event_queue = queue.Queue()
         self.message_callback: Optional[Callable[[int, str, str], Any]] = None  # (sender_id, sender_name, message)
         self.establish_connection(address)
         
@@ -76,9 +78,28 @@ class Client(socket.socket):
                         
                         # Note: Callback should handle thread safety if updating UI, that's why i'm using ctk's after method thank God lol
                         if self.message_callback:
+                            #just realised i'm sending some useless data, 'the name'
                             self.message_callback(sender_id, sender_name, message_content)
                         else:
                             print(f"[{sender_name}]: {message_content}")
+                elif message_data.startswith("EVENT:"):
+                   parts = message_data[6:].split(":")
+                   if len(parts) == 1:
+                       event_type = parts[0]
+                       self.gui_event_queue.put({'type' : event_type})
+                   elif len(parts) == 3:
+                       event_type = parts[0]
+                       user_id = parts[1]
+                       status = parts[2]
+                       self.gui_event_queue.put(
+                           {
+                               'type': event_type,
+                               'user_id' : int(user_id),
+                               'status' : status
+                           }
+                       )
+                        
+                       
                 else:
                     print(f"Received: {message_data}")
             except socket.timeout:
@@ -163,6 +184,8 @@ class Client(socket.socket):
         except Exception as e:
             exception_occured(e, show_traceback=True)
             sys.exit(1)
+            
+        #TODO: add finally that can trigger a gui_event to reconnect
         
         
         
