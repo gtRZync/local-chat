@@ -7,13 +7,12 @@ from local_chat.command.auth import connect
 from CTkMessagebox import CTkMessagebox
 
 class LoginView(ctk.CTkFrame):
-    def __init__(self, master, back_command: Union[Callable[[], Any], None]):
+    def __init__(self, master, back_callback: Union[Callable[[], Any], None]):
         super().__init__(master, fg_color='#FDFDFD', corner_radius=0)
-        self.header_font = ctk.CTkFont(family='SF Pro Display', weight='bold', size=35)
         self.text_font = ctk.CTkFont(family='SF Pro Text', size=16)
-        self.header_text = 'Enter your\n details'
         self.user_icon = ctk.CTkImage(Image.open(ASSETS_DIR / 'icon/Sample_User_Icon.png').resize((20, 20)))
         self.back_icon = ctk.CTkImage(Image.open(ASSETS_DIR / 'icon/chevron_backward.png').resize((60, 60)))
+        self.header_icon = ctk.CTkImage(Image.open(ASSETS_DIR / 'icon/header.png'), size=(220, 220))
         self.back = ctk.CTkButton(
             self, 
             width=20,
@@ -21,15 +20,15 @@ class LoginView(ctk.CTkFrame):
             image=self.back_icon, 
             fg_color='#FDFDFD', 
             hover_color="#DADADA", 
-            command=back_command, 
+            command=back_callback, 
             compound='left',
             border_width=0
             )
         self.title = ctk.CTkLabel(
             self, 
             text_color='black', 
-            text=self.header_text, 
-            font=self.header_font, 
+            text='',
+            image=self.header_icon,
             fg_color='#FDFDFD'
             )
         self.number_frame = ctk.CTkFrame(self, fg_color='#FDFDFD', border_color="#A9A9A6", border_width=2)
@@ -80,7 +79,7 @@ class LoginView(ctk.CTkFrame):
         self.__login_command = None
         self.__status: dict[str, bool] = {'logged in' : False}
         self.back.pack(anchor='w', padx=5)
-        self.title.pack(pady=(150 ,5))
+        self.title.pack(pady=(50,5))
         
         self.number_frame.pack(fill=ctk.X, padx=20, pady=20)
         self.number_icon_label.pack(side=ctk.LEFT, padx=(10, 0), pady=2)
@@ -96,8 +95,13 @@ class LoginView(ctk.CTkFrame):
         self.number_entry.bind('<Key>', self.__activate_btn)
         self.bind('<Button-1>', lambda event: self.__shift_focus(event))
         self.title.bind('<Button-1>', lambda event: self.__shift_focus(event))
+        self.name_entry.bind('<Key>', self.__on_enter)
+        self.number_entry.bind('<Key>', self.__on_enter)
         self.number_entry.after(1, self.__number_limit)
         
+    def __on_enter(self, event: tk.Event):
+        if event.keysym.lower() == 'return':
+            self.continue_btn.invoke()
         
     def __shift_focus(self, event: tk.Event):
         if (event.widget is self._canvas or
