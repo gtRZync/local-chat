@@ -1,17 +1,19 @@
 import customtkinter as ctk
 from PIL import Image
+from local_chat.client.client import Client
+from local_chat.command.data_loader import get_contacts_for_user
 from local_chat.config import ASSETS_DIR
 from typing import Callable, Any
 from local_chat.gui.widgets.nameplate import NamePlate
 
 class ChatListView(ctk.CTkFrame):
-    def __init__(self, master, back_command: Callable[[], Any], contact_list: list[tuple] | None = None):
+    def __init__(self, master, client: Client | None, back_command: Callable[[], Any], current_user_id: int | None = None):
         super().__init__(master, fg_color='#FDFDFD', corner_radius=0)
-        self.contacts = [
-            ( ASSETS_DIR / 'icon/default-avatar.png' , 'Jhon Doe' , 'Online', ),
-            ( ASSETS_DIR / 'icon/default-avatar.png' , 'Michael Brown', 'Offline'), 
-            ( ASSETS_DIR / 'icon/default-avatar.png' , 'Emily Johnson', 'Online') 
-            ]
+        self.client = client
+        self.default_avatar = ASSETS_DIR / 'icon/default-avatar.png' #TODO: decide wheter to put it in config
+        self.current_user_id = current_user_id
+        self.contacts: list[dict] = []
+        self.nameplates: dict[int, NamePlate] = {}
         
         self.header_font = ctk.CTkFont(family='SF Pro Display', weight='bold', size=35)
         self.text_font = ctk.CTkFont(family='SF Pro Text', weight='normal', size=16)
@@ -69,11 +71,66 @@ class ChatListView(ctk.CTkFrame):
         self.search_icon_label.pack(side=ctk.LEFT, padx=(10, 0), pady=2)
         self.search_entry.pack(padx=(0, 20), pady=2, fill=ctk.X)
         self.chat_list.pack(expand=True, fill=ctk.BOTH)
-        self.load_contacts()
+        self._load_contacts()
+        
+    def set_client(self, client: Client):
+        self.client = client
     
-    def load_contacts(self):
-        if self.contacts:
-            for img_path, username, status in self.contacts:
-                NamePlate(self.chat_list, img_path, username, status).pack(pady=5, fill=ctk.X)
-        else:
-            self.no_contact.pack(expand=True, fill=ctk.BOTH, pady=(200, 0))
+    def _load_contacts(self) -> None:
+        """
+        Load contacts from conversations database
+        """
+        if self.current_user_id is None:
+            self.show_no_contacts()
+            return 
+            
+        contact_data = get_contacts_for_user(self.current_user_id)
+        if contact_data == []:
+            self.show_no_contacts()
+            return
+            
+        for contact in contact_data:
+            if contact['user_id'] not in self.nameplates:
+                contact_dict = {
+                    'photo_path' :      contact['photo_path'],
+                    'name' :            contact['name'],
+                    'status' :          contact['status'],
+                    'user_id' :         contact['user_id'],
+                    'conversation_id' : contact['conversation_id']
+                }
+                self.contacts.append(contact_dict)
+            
+        self.display_contacts()
+        
+    def create_contact(self, photo_path: str, name: str, status: str, user_id: int, convo_id: int):
+        return tuple([photo_path, name, status, user_id, convo_id])
+        
+    def display_contacts(self) -> None:
+        self.no_contact.pack_forget()
+        for contact in self.contacts:
+            if contact['user_id'] not in self.nameplates:
+                img_path, username, status, user_id, conv_id = contact.values()
+                nameplate = NamePlate(
+                    self.chat_list,
+                    img_path or self.default_avatar,
+                    username,
+                    status,
+                    on_click= lambda uid=user_id, name=username, stat = status:
+                        self.open_conversation(uid, name, stat)
+                )
+                nameplate.pack(pady=5, fill=ctk.X)
+                self.nameplates[user_id] = nameplate
+            
+    
+    def open_conversation(self, receiver_uid: int ,receiver_name: str, status: str):
+        master = self.master
+        
+        conversation_view = master.create_conversation_view( 
+            receiver_user_id=receiver_uid,
+            receiver_name=receiver_name,
+            status=status
+        )
+        master.show_view(conversation_view)
+            
+    def show_no_contacts(self):
+        self.no_contact.pack(expand=True, fill=ctk.BOTH, pady=(200, 0))
