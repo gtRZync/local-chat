@@ -1,4 +1,7 @@
-# <h1 align="center"> 📱 **Local Chat - A Modern Socket-Based Chat Application** </h1>
+<h1 align="center"> 
+    <img src="assets/icon/header.png" alt="chat" width="10%" height="10%" /> 
+    <strong>Local Chat - A Modern Socket-Based Chat Application </strong>
+</h1>
 
 <div align="center">
 
@@ -212,15 +215,16 @@ local-chat/
 │   ├── app/              # Main application (client GUI)
 │   │   └── app.py       # Entry point for client
 │   ├── server/           # Server implementation
-│   │   └── server.py     # Entry point for server
+│   │   └── server.py 
+│   │   └── __main__.py     # Entry point for server
 │   ├── client/           # Client networking
-│   ├── command/          # Business logic (auth, data)
-│   ├── config/           # Configuration files
+│   ├── command/          # Business logic (auth, data, messages)
+│   ├── config/           # Configuration files (paths..etc)
 │   ├── gui/              # GUI components
 │   │   ├── views/        # Different UI views
 │   │   └── widgets/      # Reusable UI widgets
 │   └── utils/            # Utility functions
-├── main.py               # (Optional entry point)
+├── main.py               # entry point importing app.py
 ├── requirements.txt      # Python dependencies
 └── README.md            # This file
 ```
