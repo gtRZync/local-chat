@@ -1,10 +1,11 @@
 import customtkinter as ctk
+import tkinter as tk
 from PIL import Image, ImageTk
 from local_chat.utils import TimeUpdatableMixin
 from local_chat.config import ASSETS_DIR
 
 class StatusBar(TimeUpdatableMixin):
-    def __init__(self, canvas: ctk.CTkCanvas, canvas_width: int) -> None:
+    def __init__(self, canvas: tk.Canvas, canvas_width: int) -> None:
         self.canvas = canvas
         self.font = ctk.CTkFont(family='SF Pro Text', size=18, weight='bold')
         x = self.font.measure(self.get_time_text())
