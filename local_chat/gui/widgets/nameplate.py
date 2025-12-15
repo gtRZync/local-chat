@@ -1,9 +1,9 @@
-from typing import Callable, Optional
+from typing import Callable
 import customtkinter as ctk
 from PIL import Image
 
 class NamePlate(ctk.CTkFrame):
-    def __init__(self, master, photo_path, name, status, on_click : Optional[Callable]=None, hover= True, **kwargs):
+    def __init__(self, master, photo_path, name: str, status: str, on_click : Callable | None =None, hover= True, **kwargs):
         cursor = 'hand2' if hover else 'arrow'
         super().__init__(master, fg_color='#FDFDFD', border_width=0, cursor=cursor, **kwargs)
         self.text_font = ctk.CTkFont(family='SF Pro Text', weight='normal', size=16)
@@ -14,7 +14,8 @@ class NamePlate(ctk.CTkFrame):
         self.pfp_label = ctk.CTkLabel(self, text='', image=self.avatar)
 
         self.name_stat_frame = ctk.CTkFrame(self, fg_color='#FDFDFD', border_width=0)
-
+        
+        self.username = name
         self.uname = ctk.CTkLabel(self.name_stat_frame, text=name, text_color='black', font=self.text_font_bold)
 
         self.status_frame = ctk.CTkFrame(self.name_stat_frame, fg_color='#FDFDFD', border_width=0)
@@ -36,7 +37,12 @@ class NamePlate(ctk.CTkFrame):
         if status.lower().strip() == 'online':
             return '#7AAD67'
         return "#ADB3B4"
+        
+    def update_status(self, new_status: str):
+        self.status_indic.configure(text_color=self.get_status_color(new_status))
+        self.status_indic_text.configure(text=new_status)
     
+    #brace urself lol very profesionnal code incomming 😭
     def bind_events(self):
         self.__bind_event(self)
         self.__bind_event(self.uname)
