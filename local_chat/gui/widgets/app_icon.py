@@ -6,7 +6,7 @@ from local_chat.utils import Vector2i
 class AppIcon:
     def __init__(
         self, 
-        canvas: ctk.CTkCanvas, 
+        canvas: tk.Canvas, 
         image: ImageTk.PhotoImage, 
         pos: Vector2i, 
         size: Vector2i = Vector2i(-1, -1), #dont know
@@ -18,9 +18,9 @@ class AppIcon:
         self.__icon_dragged = False
         self.canvas = canvas
         self.icon = image
-        self.font = ctk.CTkFont(family='Arial', size=16) if font is None else font
+        self.font = font or ctk.CTkFont(family='Arial', size=16)
         self.__icon_id = canvas.create_image(pos.x, pos.y, image=image, anchor=anchor)
-        self.__TEXT_PADY = 10
+        self.__TEXT_PADY = 20
         self.__text_x = pos.x + image.width() / 2
         self.__text_y = pos.y + image.height() + self.__TEXT_PADY
         self.__name_id = canvas.create_text(self.__text_x, self.__text_y, font=self.font, text=app_name)
@@ -49,6 +49,8 @@ class AppIcon:
         if not self.__icon_dragged:
             self.__launch_app = True
         self.__icon_dragged = False
+        self._clamp()
+        
     
     @property   
     def should_launch_app(self) -> bool:
@@ -77,3 +79,32 @@ class AppIcon:
             self.canvas.configure(cursor='hand2')
         elif event.type == tk.EventType.Leave:
             self.canvas.configure(cursor='arrow')
+            
+    def _clamp(self):
+        x, y = self.canvas.coords(self.icon_id)
+        
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+        
+        # Grid configuration
+        columns = 8  # number of horizontal cells
+        rows = 16    # number of vertical cells
+        cell_width = canvas_width / columns
+        cell_height = canvas_height / rows
+    
+        # Snap x, y to nearest grid cell
+        snapped_x = round(x / cell_width) * cell_width
+        snapped_y = round(y / cell_height) * cell_height
+    
+        # Clamp to canvas boundaries
+        snapped_x = min(max(snapped_x, 0), canvas_width - self.icon.width())
+        snapped_y = min(max(snapped_y, 0), canvas_height - self.icon.height())
+    
+        self.canvas.coords(self.icon_id, snapped_x, snapped_y)
+    
+        self.__text_x = snapped_x + self.icon.width() / 2
+        self.__text_y = snapped_y + self.icon.height() + self.__TEXT_PADY
+        self.canvas.coords(self.name_id, self.__text_x, self.__text_y)
+    
+            
+                
