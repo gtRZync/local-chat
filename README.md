@@ -1,5 +1,6 @@
 <h1 align="center"> 
-    <img src="assets/icon/header.png" alt="chat" width="10%" height="10%" /> 
+    <img src="assets/icon/header.png" alt="chat" /> 
+<br>
     <strong>Local Chat - A Modern Socket-Based Chat Application </strong>
 </h1>
 
