@@ -19,6 +19,13 @@
 
 ---
 
+## Project Status
+> Final grade: 19/20 (late submission penalty).
+> The project significantly exceeded the baseline expectations for the assignment and was highlighted during evaluation as one of the strongest submissions..
+> Although it started as a school project, I’m particularly proud of the result and decided to showcase it here.
+> Development is currently paused while I focus on coursework. A server architecture refactor is planned before further improvements.
+
+
 ## 📖 **About**
 
 **Local Chat** is a desktop chat application designed for two users to communicate over a local network (same PC or LAN). Built as a school project, this application demonstrates socket programming, modern GUI design, and client-server architecture.
