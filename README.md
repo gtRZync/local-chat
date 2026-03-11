@@ -27,7 +27,7 @@
 > Development is currently paused while I focus on coursework. A server architecture refactor is planned before further improvements.
 
 
-## 📖 **About**
+## **About**
 
 **Local Chat** is a desktop chat application designed for two users to communicate over a local network (same PC or LAN). Built as a school project, this application demonstrates socket programming, modern GUI design, and client-server architecture.
 
@@ -37,21 +37,21 @@ The application features a **phone-inspired UI design** using CustomTkinter, pro
 
 ## **Features**
 
-- 🔐 **User Authentication** - Login/signup system with phone number and username
-- 💬 **Real-time Messaging** - Socket-based communication between clients with instant delivery
-- 📱 **Modern UI** - Phone-inspired design with CustomTkinter
-- 🎨 **Beautiful Interface** - Clean, modern aesthetic with custom fonts and icons
-- 🔄 **Multi-threaded** - Non-blocking UI with background network operations
-- 💾 **Message Persistence** - All messages saved to JSON database with timestamps
-- 📜 **Conversation History** - Load and display past messages when opening chats
-- 👥 **Auto-Contact Discovery** - Connected users automatically appear in each other's contact lists
-- 🖱️ **Draggable App Icon** - Drag the app icon on the home screen for a playful experience
-- 🎯 **GUI Event System** - Thread-safe UI updates via server-sent GUI events
-- 🌐 **Local Network Support** - Works on same PC or local network
+- **User Authentication** - Login/signup system with phone number and username
+- **Real-time Messaging** - Socket-based communication between clients with instant delivery
+- **Modern UI** - Phone-inspired design with CustomTkinter
+- **Beautiful Interface** - Clean, modern aesthetic with custom fonts and icons
+- **Multi-threaded** - Non-blocking UI with background network operations
+- **Message Persistence** - All messages saved to JSON database with timestamps
+- **Conversation History** - Load and display past messages when opening chats
+- **Auto-Contact Discovery** - Connected users automatically appear in each other's contact lists
+-️ **Draggable App Icon** - Drag the app icon on the home screen for a playful experience
+- **GUI Event System** - Thread-safe UI updates via server-sent GUI events
+- **Local Network Support** - Works on same PC or local network
 
 ---
 
-## 🛠️ **Tech Stack**
+## **Tech Stack**
 
 | Component | Technology |
 |-----------|-----------|
@@ -171,7 +171,7 @@ A window with a phone-like interface will appear!
 
 ---
 
-## 📸 **Screenshots**
+## **Screenshots**
 
 ### **Home Screen**
 <div align="center">
@@ -209,7 +209,7 @@ A window with a phone-like interface will appear!
 
 ---
 
-## 📁 **Project Structure**
+## **Project Structure**
 
 ```
 local-chat/
@@ -239,7 +239,7 @@ local-chat/
 
 ---
 
-## 🔧 **Configuration**
+## **Configuration**
 
 ### **Server Configuration**
 
@@ -267,7 +267,7 @@ address=Address(host='192.168.1.100', port=5423)  # Example: different PC on LAN
 ```
 ---
 
-## 🎓 **Educational Purpose**
+## **Educational Purpose**
 
 This project was created for a **Human-Computer Interaction** course assignment. It demonstrates:
 
@@ -283,7 +283,7 @@ This project was created for a **Human-Computer Interaction** course assignment.
 
 ---
 
-## ⚠️ **Important Notes**
+## **Important Notes**
 
 ### **Non-Production Ready**
 
@@ -345,7 +345,7 @@ This code is **NOT production-ready** and is intended for educational purposes:
 
 ---
 
-## 📝 **Development**
+## **Development**
 
 ### **Adding Features**
 
@@ -356,7 +356,7 @@ The codebase is structured for easy extension:
 
 ---
 
-## 👥 **Contributors**
+## **Contributors**
 
 - **Developer:** Myson Dio
 - **Course:** Human-Computer Interaction
