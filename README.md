@@ -175,36 +175,28 @@ A window with a phone-like interface will appear!
 
 ### **Home Screen**
 <div align="center">
-
-*Screenshot placeholder - Beautiful phone-inspired home screen with clock and app icon*
-
+    <img src="assets/screens/home_screen.png" alt="Home Screen">
 </div>
 
 ---
 
 ### **Login View**
 <div align="center">
-
-*Screenshot placeholder - Clean login interface with phone number and username fields*
-
+    <img src="assets/screens/login_view.png" alt="Login View">
 </div>
 
 ---
 
 ### **Chat List View**
 <div align="center">
-
-*Screenshot placeholder - Chat list showing available contacts*
-
+    <img src="assets/screens/chat_list.png" alt="Chat List View">
 </div>
 
 ---
 
 ### **Conversation View**
 <div align="center">
-
-*Screenshot placeholder - Active chat conversation interface*
-
+    <img src="assets/screens/conv_view.png" alt="Conversation View">
 </div>
 
 ---
@@ -373,10 +365,4 @@ The codebase is structured for easy extension:
 
 ---
 
-<div align="center">
-
-*"Connecting people, one socket at a time"*
-
-</div>
-
-<p align="center"><a href="https://github.com/catppuccin/catppuccin/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=363a4f&colorB=b7bdf8"/></a></p>
+<p align="center"><a href="https://github.com/gtRZync/local-chat/blob/main/README.md"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=363a4f&colorB=b7bdf8"/></a></p>
